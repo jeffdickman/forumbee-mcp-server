@@ -1,3 +1,11 @@
+"""MCP server exposing Forumbee API tools to AI assistants.
+
+Each function decorated with @mcp.tool() becomes a tool that Claude (or any
+MCP-compatible AI) can call by name. The docstring on each tool is what the AI
+reads to understand what the tool does and what arguments it takes — so keep
+them clear and accurate.
+"""
+
 from mcp.server.fastmcp import FastMCP
 
 from forumbee_mcp.client import ForumbeeClient
@@ -6,6 +14,8 @@ mcp = FastMCP("forumbee")
 
 
 def _client() -> ForumbeeClient:
+    # Create a fresh client for each tool call. This ensures credentials are
+    # always read from the current environment rather than cached at startup.
     return ForumbeeClient()
 
 
