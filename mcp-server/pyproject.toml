@@ -1,0 +1,17 @@
+[project]
+name = "forumbee-mcp"
+version = "0.1.0"
+description = "MCP server for Forumbee community forums"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]",
+    "httpx",
+    "python-dotenv",
+]
+
+[project.scripts]
+forumbee-mcp = "forumbee_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
