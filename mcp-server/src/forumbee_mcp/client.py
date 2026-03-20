@@ -151,3 +151,52 @@ class ForumbeeClient:
     async def get_category(self, category_link: str) -> dict[str, Any]:
         """Get details for a specific category."""
         return await self._request(f"category/{category_link}")
+
+    async def list_category_followers(
+        self,
+        category_link: str,
+        sort: str = "joined",
+        limit: int = 25,
+    ) -> dict[str, Any]:
+        """List users who follow a category."""
+        params: dict[str, Any] = {
+            "fields": "userKey,name,handle,email,role,label,joined,accessed",
+            "sort": sort,
+            "limit": min(limit, 1000),
+        }
+        return await self._request(f"categories/{category_link}/followers", params)
+
+    async def list_category_security_users(
+        self,
+        category_link: str,
+        sort: str = "joined",
+        limit: int = 25,
+    ) -> dict[str, Any]:
+        """List users who have permission to access a category."""
+        params: dict[str, Any] = {
+            "fields": "userKey,name,handle,email,role,label,joined,accessed",
+            "sort": sort,
+            "limit": min(limit, 1000),
+        }
+        return await self._request(f"categories/{category_link}/security/users", params)
+
+    async def list_groups(self) -> dict[str, Any]:
+        """List all security groups."""
+        params = {
+            "fields": "groupKey,groupName,groupType,role,userCount,userJoined,accessDomains",
+        }
+        return await self._request("groups", params)
+
+    async def list_group_users(
+        self,
+        group_key: str,
+        sort: str = "joined",
+        limit: int = 25,
+    ) -> dict[str, Any]:
+        """List users in a security group."""
+        params: dict[str, Any] = {
+            "fields": "userKey,name,handle,email,role,label,joined,accessed,status",
+            "sort": sort,
+            "limit": min(limit, 1000),
+        }
+        return await self._request(f"groups/{group_key}/users", params)

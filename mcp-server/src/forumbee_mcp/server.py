@@ -103,6 +103,62 @@ async def list_users(
     return await _client().list_users(search, sort, limit)
 
 
+@mcp.tool()
+async def list_category_followers(
+    category_link: str,
+    sort: str = "joined",
+    limit: int = 25,
+) -> dict:
+    """List users who follow a specific category.
+
+    Args:
+        category_link: The category URL slug.
+        sort: Sort order - one of: joined, accessed, name, posts. Prefix with '-' to reverse.
+        limit: Max results to return (default 25, max 1000).
+    """
+    return await _client().list_category_followers(category_link, sort, limit)
+
+
+@mcp.tool()
+async def list_category_security_users(
+    category_link: str,
+    sort: str = "joined",
+    limit: int = 25,
+) -> dict:
+    """List users who have permission to access a specific category.
+
+    Includes users with access via direct assignment, UserGroup, DomainGroup, or moderator/admin role.
+
+    Args:
+        category_link: The category URL slug.
+        sort: Sort order - one of: joined, accessed, name, posts. Prefix with '-' to reverse.
+        limit: Max results to return (default 25, max 1000).
+    """
+    return await _client().list_category_security_users(category_link, sort, limit)
+
+
+@mcp.tool()
+async def list_groups() -> dict:
+    """List all security groups (UserGroups and DomainGroups) with member counts."""
+    return await _client().list_groups()
+
+
+@mcp.tool()
+async def list_group_users(
+    group_key: str,
+    sort: str = "joined",
+    limit: int = 25,
+) -> dict:
+    """List users in a specific security group.
+
+    Args:
+        group_key: The unique group key identifier.
+        sort: Sort order - one of: joined, accessed, name, posts. Prefix with '-' to reverse.
+        limit: Max results to return (default 25, max 1000).
+    """
+    return await _client().list_group_users(group_key, sort, limit)
+
+
 def main():
     mcp.run(transport="stdio")
 
