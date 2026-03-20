@@ -112,11 +112,13 @@ class ForumbeeClient:
         interval: str | None = None,
         limit: int = 25,
     ) -> dict[str, Any]:
-        """Get community metrics."""
+        """Get community metrics (users, searches, topics, categories, pageviews)."""
         fields_map = {
             "users": "date,period,users,page_views,joined,topic_posts,reply_posts,all_posts",
             "searches": "query,search_count,top_clicked_url",
             "topics": "topicKey,topicTitle,topicUrl,replies,likes,views,category",
+            "categories": "categoryName,categoryType,categoryLink,topic_views,topic_likes,reply_posts,all_posts",
+            "pageviews": "date,period,area,page_views",
         }
         if metric_type not in fields_map:
             raise ValueError(f"metric_type must be one of: {', '.join(fields_map.keys())}")
@@ -129,3 +131,23 @@ class ForumbeeClient:
         if interval:
             params["interval"] = interval
         return await self._request(f"metrics/{metric_type}", params)
+
+    async def list_users(
+        self,
+        search: str | None = None,
+        sort: str = "joined",
+        limit: int = 25,
+    ) -> dict[str, Any]:
+        """List community users."""
+        params: dict[str, Any] = {
+            "fields": "userKey,name,handle,email,role,label,joined,accessed,topics,replies,posts,likes,likesReceived,followers",
+            "sort": sort,
+            "limit": min(limit, 1000),
+        }
+        if search:
+            params["search"] = search
+        return await self._request("users", params)
+
+    async def get_category(self, category_link: str) -> dict[str, Any]:
+        """Get details for a specific category."""
+        return await self._request(f"category/{category_link}")
