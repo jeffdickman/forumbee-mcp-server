@@ -5,6 +5,7 @@ An MCP (Model Context Protocol) server that provides tools for interacting with 
 ## Prerequisites
 
 - Python 3.10+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) (Python package manager)
 - A Forumbee community with API access
 - An API token ([how to generate one](https://community.forumbee.com/t/y72fnn/api-reference))
 
@@ -12,13 +13,7 @@ An MCP (Model Context Protocol) server that provides tools for interacting with 
 
 ```bash
 cd mcp-server
-
-# Create and activate virtual environment
-python -m venv .venv
-source .venv/bin/activate
-
-# Install dependencies
-pip install -e .
+uv sync
 ```
 
 ### Configuration
@@ -46,7 +41,13 @@ Add to your Claude Code MCP settings (`~/.claude/settings.json`):
 {
   "mcpServers": {
     "forumbee": {
-      "command": "/path/to/mcp-server/.venv/bin/forumbee-mcp"
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/path/to/forumbee-mcp-server/mcp-server",
+        "run",
+        "forumbee-mcp"
+      ]
     }
   }
 }
@@ -54,13 +55,19 @@ Add to your Claude Code MCP settings (`~/.claude/settings.json`):
 
 ### With Claude Desktop
 
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+Add to your Claude Desktop config (`~/Library/Application\ Support/Claude/claude_desktop_config.json` on macOS):
 
 ```json
 {
   "mcpServers": {
     "forumbee": {
-      "command": "/path/to/mcp-server/.venv/bin/forumbee-mcp"
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/path/to/forumbee-mcp-server/mcp-server",
+        "run",
+        "forumbee-mcp"
+      ]
     }
   }
 }
@@ -70,8 +77,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 
 ```bash
 cd mcp-server
-source .venv/bin/activate
-forumbee-mcp
+uv run forumbee-mcp
 ```
 
 The server communicates over stdio using the MCP protocol.
