@@ -11,16 +11,24 @@ An MCP (Model Context Protocol) server that provides tools for interacting with 
 
 ## Setup
 
+> **Note:** The setup script works on macOS and Linux. It has not been tested on Windows — Windows users should follow the [manual setup](#manual-setup) steps below.
+
+Run the interactive setup script from the `mcp-server` directory:
+
+```bash
+cd mcp-server
+bash setup.sh
+```
+
+The script will prompt for your Forumbee domain and API token, write a `.env` file, and install dependencies.
+
+### Manual Setup
+
+If you prefer to set up manually (or are on Windows):
+
 ```bash
 cd mcp-server
 uv sync
-```
-
-### Configuration
-
-Copy the example env file and fill in your credentials:
-
-```bash
 cp .env.example .env
 ```
 
