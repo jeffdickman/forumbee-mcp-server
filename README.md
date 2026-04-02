@@ -43,27 +43,21 @@ FORUMBEE_API_TOKEN=your_token_here
 
 ### With Claude Code
 
-Add to your Claude Code MCP settings (`~/.claude/settings.json`):
+Run this command to register the server:
 
-```json
-{
-  "mcpServers": {
-    "forumbee": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/path/to/forumbee-mcp-server/mcp-server",
-        "run",
-        "forumbee-mcp"
-      ]
-    }
-  }
-}
+```bash
+claude mcp add forumbee -- uv --directory /path/to/forumbee-mcp-server/mcp-server run forumbee-mcp
+```
+
+By default this adds it at local scope (private to the current project). Use `-s user` to add it globally:
+
+```bash
+claude mcp add -s user forumbee -- uv --directory /path/to/forumbee-mcp-server/mcp-server run forumbee-mcp
 ```
 
 ### With Claude Desktop
 
-Add to your Claude Desktop config (`~/Library/Application\ Support/Claude/claude_desktop_config.json` on macOS):
+Open Claude Desktop, go to **Settings → Developer**, then click **Edit Config** to open the `claude_desktop_config.json` file. Add the following to the `mcpServers` section:
 
 ```json
 {
